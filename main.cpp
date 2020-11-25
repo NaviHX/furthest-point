@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstdio>
 #include <stack>
+#include <cstdlib>
 
 using namespace std;
 
@@ -22,8 +23,8 @@ struct vertex
 int dis[1001][1001];
 vertex ve[1001];
 
-void addEdge(int from,int to,int weight);
-void vertexInit(vertex* v);
+void addEdge(int from, int to, int weight);
+void vertexInit(vertex *v);
 
 int main()
 {
@@ -49,4 +50,12 @@ int main()
     return 0;
 }
 
-
+void addEdge(int from, int to, int weight)
+{
+    edge *e = (edge *)malloc(sizeof(edge));
+    e->from = from;
+    e->to = to;
+    e->weight = weight;
+    e->nextEdge = ve[from].firstEdge;
+    ve[from].firstEdge = e;
+}
