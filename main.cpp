@@ -18,3 +18,9 @@ struct vertex
     int outDegree;   //出度
     edge *firstEdge; //第一条边的指针
 };
+
+int dis[1001][1001];
+vertex ve[1001];
+
+void addEdge(int from,int to,int weight);
+void vertexInit(vertex* v);
