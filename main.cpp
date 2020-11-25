@@ -59,3 +59,10 @@ void addEdge(int from, int to, int weight)
     e->nextEdge = ve[from].firstEdge;
     ve[from].firstEdge = e;
 }
+
+void vertexInit(vertex *v)
+{
+    v->firstEdge=NULL;
+    v->inDegree=0;
+    v->outDegree=0;
+}
