@@ -2,6 +2,7 @@
 #include <cstdio>
 #include <queue>
 #include <cstdlib>
+#include <stack>
 
 using namespace std;
 
@@ -18,6 +19,7 @@ struct vertex
     int inDegree;    //入度
     int outDegree;   //出度
     edge *firstEdge; //第一条边的指针
+    int from;        //如果该点在最远距离路径上,表示路径上该点前一个点
 };
 
 #ifdef DEBUG
@@ -74,6 +76,7 @@ void vertexInit(vertex *v)
     v->firstEdge = NULL;
     v->inDegree = 0;
     v->outDegree = 0;
+    v->from = -1;
 }
 
 void work()
@@ -110,8 +113,23 @@ void work()
                 ansFrom = i;
                 ansTo = j;
             }
-    cout << "相距最远的两点为: " << ansFrom << " "
-         << " " << ansTo << "\n\n";
+    cout << "相距最远的两点为: " << ansFrom << " "<< ansTo << "\n";
+    cout<< "最远路径: ";
+    int cur=ansTo;
+    stack<int> s;
+    while(cur!=-1)
+    {
+        s.push(cur);
+        cur=ve[cur].from;
+    }
+    cout<<s.top();
+    s.pop();
+    while(!s.empty())
+    {
+        cout<<" -> "<<s.top();
+        s.pop();
+    }
+    cout<<"\n";
     return;
 }
 
@@ -131,6 +149,7 @@ void solveDis(int num)
             {
                 q.push(p->to);
                 dis[num][p->to] = dis[num][p->from] + p->weight;
+                ve[p->to].from=p->from;
             }
             p = p->nextEdge;
         }
