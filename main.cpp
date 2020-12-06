@@ -32,11 +32,11 @@ vertex ve[1001];
 int visited[1001];
 #endif
 
-void addEdge(int from, int to, int weight);
-void vertexInit(vertex *v);
-void work();
-void solveDis(int num);
-int checkCircle(int vnum);
+void addEdge(int from, int to, int weight); //添加一条边
+void vertexInit(vertex *v);                 //初始化结点
+void work();                                //处理函数
+void solveDis(int num);                     //求从某节点开始的最远路径
+int checkCircle(int vnum);                  //判断从某点开始是否有环
 
 int main()
 {
@@ -90,6 +90,7 @@ void work()
     int count = 0; //计数入度为0的顶点数
     cout << "请输入顶点数和边数:";
     cin >> num >> vnum;
+    //建图
     for (int i = 1; i <= num; i++)
     {
         for (int j = 1; j <= num; j++)
@@ -109,6 +110,7 @@ void work()
         cin >> start >> end >> w;
         addEdge(start, end, w);
     }
+    //求最远路径
     for (int i = 1; i <= num; i++)
         if (ve[i].inDegree == 0)
         {
@@ -135,6 +137,7 @@ void work()
             }
     cout << "相距最远的两点为: " << ansFrom << " " << ansTo << "\n";
     cout << "最远路径: ";
+    //逆序输出最远路径
     int cur = ansTo;
     stack<int> s;
     while (cur != -1)
