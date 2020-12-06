@@ -17,6 +17,22 @@
      }
 ```
 
+遍历起点时从未初始化的0号结点开始
+```diff
+-    for (int i = 0; i <= num; i++)
++    for (int i = 1; i <= num; i++)
+        if (ve[i].inDegree == 0)
+        {
+            if (checkCircle(i))
+            {
+                cout << "查找失败\n图中存在环\n";
+                return;
+            }
+            solveDis(i);
+            count++;
+        }
+```
+
 ## 设计回顾
 
 时空分析
@@ -27,3 +43,4 @@
 |vertexInit|O(1)|O(1)|
 |solveDis|O(VE)|O(V)|
 |work|O(EV^2)|O(V)|
+|checkCircle|O(V^2)|O(V)|

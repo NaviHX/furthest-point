@@ -43,6 +43,7 @@ void work()
     for (int i = 1; i <= num; i++)
         for (int j = 1; j <= num; j++)
             //遍历数组找到最远的两点
+            //同时确定是否存在环,存在则直接退出函数
     cout << "相距最远的两点为: " << ansFrom << " "<< ansTo << "\n";
     cout<< "最远路径: ";
     int cur=ansTo;
@@ -89,5 +90,24 @@ void solveDis(int num)
         }
         q.pop();
     }
+}
+```
+
+int checkCircle(int vnum)
+深度优先搜索判断从某点开始是否有环
+```c++
+int checkCircle(int vnum)
+{
+    if(已访问过该点)
+        //返回1
+    visited[vnum] = 1;
+    while (遍历每一条边)
+    {
+        if (checkCircle(p->to))
+            return 1;
+        //下一条边
+    }
+    visited[vnum] = 0;
+    return 0;
 }
 ```
