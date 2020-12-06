@@ -25,15 +25,18 @@ struct vertex
 #ifdef DEBUG
 int dis[11][11];
 vertex ve[1001];
+int visited[1001];
 #else
 int dis[1001][1001];
 vertex ve[1001];
+int visited[1001];
 #endif
 
 void addEdge(int from, int to, int weight);
 void vertexInit(vertex *v);
 void work();
 void solveDis(int num);
+int checkCircle(int vnum);
 
 int main()
 {
@@ -84,11 +87,15 @@ void work()
     int num, vnum;
     int ans, ansFrom, ansTo;
     int start, end, w;
+    int count = 0; //计数入度为0的顶点数
     cout << "请输入顶点数和边数:";
     cin >> num >> vnum;
     for (int i = 1; i <= num; i++)
+    {
         for (int j = 1; j <= num; j++)
             dis[i][j] = 0;
+        visited[i] = 0;
+    }
     if (num > 1000)
     {
         cout << "顶点数过大\n\n";
@@ -102,9 +109,22 @@ void work()
         cin >> start >> end >> w;
         addEdge(start, end, w);
     }
-    for (int i = 0; i <= num; i++)
+    for (int i = 1; i <= num; i++)
         if (ve[i].inDegree == 0)
+        {
+            if (checkCircle(i))
+            {
+                cout << "查找失败\n图中存在环\n";
+                return;
+            }
             solveDis(i);
+            count++;
+        }
+    if (!count)
+    {
+        cout << "查找失败\n图中存在环\n";
+        return;
+    }
     for (int i = 1; i <= num; i++)
         for (int j = 1; j <= num; j++)
             if (ans < dis[i][j])
@@ -113,23 +133,23 @@ void work()
                 ansFrom = i;
                 ansTo = j;
             }
-    cout << "相距最远的两点为: " << ansFrom << " "<< ansTo << "\n";
-    cout<< "最远路径: ";
-    int cur=ansTo;
+    cout << "相距最远的两点为: " << ansFrom << " " << ansTo << "\n";
+    cout << "最远路径: ";
+    int cur = ansTo;
     stack<int> s;
-    while(cur!=-1)
+    while (cur != -1)
     {
         s.push(cur);
-        cur=ve[cur].from;
+        cur = ve[cur].from;
     }
-    cout<<s.top();
+    cout << s.top();
     s.pop();
-    while(!s.empty())
+    while (!s.empty())
     {
-        cout<<" -> "<<s.top();
+        cout << " -> " << s.top();
         s.pop();
     }
-    cout<<"\n";
+    cout << "\n";
     return;
 }
 
@@ -149,10 +169,26 @@ void solveDis(int num)
             {
                 q.push(p->to);
                 dis[num][p->to] = dis[num][p->from] + p->weight;
-                ve[p->to].from=p->from;
+                ve[p->to].from = p->from;
             }
             p = p->nextEdge;
         }
         q.pop();
     }
+}
+
+int checkCircle(int vnum)
+{
+    if (visited[vnum] == 1)
+        return 1;
+    visited[vnum] = 1;
+    edge *p = ve[vnum].firstEdge;
+    while (p)
+    {
+        if (checkCircle(p->to))
+            return 1;
+        p = p->nextEdge;
+    }
+    visited[vnum] = 0;
+    return 0;
 }
